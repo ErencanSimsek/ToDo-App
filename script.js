@@ -21,10 +21,24 @@ function tasksAdd() {
 
 let btnAdd=document.getElementById('btnAdd')
 
-btnAdd.addEventListener('click',function(event) {
-    let txtTaskName=document.getElementById('txtTaskName').value
-    let lastnumber=datas.length+1;
-    datas.push({"id":lastnumber,"name":txtTaskName})
-    tasksAdd()
-    event.preventDefault();
+btnAdd.addEventListener('click',btnAddTask)
+
+btnAdd.addEventListener('keypress',function(event){
+    if(event.key == 'Enter'){
+        btnAddTask
+    }
 })
+
+function btnAddTask(event) {
+    let txtTaskName=document.getElementById('txtTaskName')
+    let lastnumber=datas.length+1;
+    if(txtTaskName == ''){
+        alert('Please Enter Text!')
+    }else{
+        datas.push({"id":lastnumber,"name":txtTaskName.value})
+        txtTaskName.value=''
+        tasksAdd()
+    }
+    
+    event.preventDefault();
+}
