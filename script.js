@@ -30,9 +30,7 @@ btnAdd.addEventListener('keypress',function(event){
 
 function deleteTask(id) {
     let deleteId;
-    deleteId=datas.findIndex(function(data){
-        return data.id==id
-    })
+    deleteId=datas.findIndex(data=>data.id==id)
     datas.splice(deleteId,1);
     tasksAdd()
 }
