@@ -13,6 +13,7 @@ function tasksAdd() {
             <li class="list-group-item">
                 <input type="checkbox"class="form-check-input" id="${data.id}">
                 <label for="${data.id}" class="form-check-label">${data.name}</label>
+                <a href="#" onclick="deleteTask(${data.id})"><i class="fa-solid fa-trash"></i></a>
             </li>
         `
         tasklist.insertAdjacentHTML('beforeend',task)
@@ -21,13 +22,22 @@ function tasksAdd() {
 
 let btnAdd=document.getElementById('btnAdd')
 
-btnAdd.addEventListener('click',btnAddTask)
-
 btnAdd.addEventListener('keypress',function(event){
     if(event.key == 'Enter'){
         btnAddTask
     }
 })
+
+function deleteTask(id) {
+    let deleteId;
+    for(let index in datas){
+        if(datas[index].id==id){
+            deleteId=index
+        }
+    }
+    datas.splice(deleteId,1);
+    tasksAdd()
+}
 
 function btnAddTask(event) {
     let txtTaskName=document.getElementById('txtTaskName')
@@ -39,6 +49,5 @@ function btnAddTask(event) {
         txtTaskName.value=''
         tasksAdd()
     }
-    
     event.preventDefault();
 }
