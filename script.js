@@ -14,6 +14,7 @@ function tasksAdd() {
                 <input type="checkbox"class="form-check-input" id="${data.id}">
                 <label for="${data.id}" class="form-check-label">${data.name}</label>
                 <a href="#" onclick="deleteTask(${data.id})"><i class="fa-solid fa-trash"></i></a>
+                <a href="#" onclick='updateTask(${data.id}, "${data.name}")'><i class="fa-solid fa-pencil"></i></a>
             </li>
         `
         tasklist.insertAdjacentHTML('beforeend',task)
@@ -21,6 +22,11 @@ function tasksAdd() {
 }
 
 let btnAdd=document.getElementById('btnAdd')
+let txtTaskName=document.getElementById('txtTaskName')
+let update=false;
+let updateid;
+
+btnAdd.addEventListener('click',btnAddTask)
 
 btnAdd.addEventListener('keypress',function(event){
     if(event.key == 'Enter'){
@@ -35,13 +41,30 @@ function deleteTask(id) {
     tasksAdd()
 }
 
+function updateTask(id, name){
+    updateid=id;
+    update=true;
+    txtTaskName.value=name
+    txtTaskName.focus()
+    txtTaskName.classList.add('active')
+}
+
 function btnAddTask(event) {
-    let txtTaskName=document.getElementById('txtTaskName')
     let lastnumber=datas.length+1;
     if(txtTaskName == ''){
         alert('Please Enter Text!')
     }else{
-        datas.push({"id":lastnumber,"name":txtTaskName.value})
+        if(!update){
+            datas.push({"id":lastnumber,"name":txtTaskName.value})
+        }
+        else{
+            for(let data of datas){
+                if(data.id == updateid){
+                    data.name=txtTaskName.value
+                }
+                update=false;
+            }
+        }
         txtTaskName.value=''
         tasksAdd()
     }
