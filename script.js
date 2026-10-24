@@ -23,10 +23,17 @@ function tasksAdd() {
 
 let btnAdd=document.getElementById('btnAdd')
 let txtTaskName=document.getElementById('txtTaskName')
+let btnDel=document.getElementById('btnDel')
 let update=false;
 let updateid;
 
+
 btnAdd.addEventListener('click',btnAddTask)
+btnDel.addEventListener('click',function(event) {
+    datas.splice(0,datas.length)
+    tasksAdd()
+    event.preventDefault()
+})
 
 btnAdd.addEventListener('keypress',function(event){
     if(event.key == 'Enter'){
