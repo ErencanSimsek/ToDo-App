@@ -8,9 +8,7 @@ let datas=[
 let btnAdd=document.getElementById('btnAdd')
 let txtTaskName=document.getElementById('txtTaskName')
 let btnDel=document.getElementById('btnDel')
-let all=document.querySelector('#all')
-let compleded=document.querySelector('#compleded')
-let unfinished=document.querySelector('#unfinished')
+let p=document.querySelectorAll('.option p')
 let tasklist=document.getElementById('task-list');
 
 let update=false;
@@ -20,31 +18,22 @@ let select='all'
 btnAdd.addEventListener('click',btnAddTask)
 btnDel.addEventListener('click',btnDelTask)
 btnAdd.addEventListener('keypress',keyEnter)
-all.addEventListener('click',allFun)
-compleded.addEventListener('click',complededFun)
-unfinished.addEventListener('click',unfinishedFun)
 
 tasksAdd()
 
-function allFun(event) {
-    selected(all,compleded,unfinished)
-    select="all"
-    tasksAdd()
-    event.preventDefault()
-}
-
-function complededFun(event) {
-    selected(compleded,all,unfinished)
-    select='compleded'
-    tasksAdd()
-    event.preventDefault()
-}
-
-function unfinishedFun(event) {
-    selected(unfinished,all,compleded)
-    select='unfinished'
-    tasksAdd()
-    event.preventDefault()
+for(let filter of p){
+    filter.addEventListener("click",function(event){
+        select = filter.id
+        if(filter.id=='all'){
+            selected(all,compleded,unfinished)
+        }else if(filter.id == "compleded"){
+            selected(compleded,all,unfinished)
+        }else if(filter.id == 'unfinished'){
+            selected(unfinished,all,compleded)
+        }
+        tasksAdd()
+        event.preventDefault()
+    })
 }
 
 function selected(add,remove1,remove2) {
