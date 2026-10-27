@@ -1,8 +1,8 @@
 let datas=[
-    {"id":1,"name":"Task 1",'status':'cancel'},
-    {"id":2,"name":"Task 2",'status':'cancel'},
-    {"id":3,"name":"Task 3",'status':'cancel'},
-    {"id":4,"name":"Task 4",'status':'select'}
+    {"id":1,"name":"Task 1",'status':'unfinished'},
+    {"id":2,"name":"Task 2",'status':'unfinished'},
+    {"id":3,"name":"Task 3",'status':'unfinished'},
+    {"id":4,"name":"Task 4",'status':'compleded'}
 ]
 
 let btnAdd=document.getElementById('btnAdd')
@@ -23,58 +23,40 @@ tasksAdd()
 
 for(let filter of p){
     filter.addEventListener("click",function(event){
+        document.querySelector('p.selected').classList.remove("selected")
+        filter.classList.add('selected')
         select = filter.id
-        if(filter.id=='all'){
-            selected(all,compleded,unfinished)
-        }else if(filter.id == "compleded"){
-            selected(compleded,all,unfinished)
-        }else if(filter.id == 'unfinished'){
-            selected(unfinished,all,compleded)
-        }
         tasksAdd()
         event.preventDefault()
     })
 }
 
-function selected(add,remove1,remove2) {
-    add.classList.add('selected')
-    remove1.classList.remove('selected')
-    remove2.classList.remove('selected')
-}
-
 function tasksAdd() {
     tasklist.innerHTML=""
     for(let data of datas){
-        let status=data.status=='select'?'checked':''
-        if(select == "all"){
-            task(status,data.id,data.name,data.status)
-        }else if(select == 'compleded' && data.status == "select"){
-            task(status,data.id,data.name,data.status)
-        }else if(select == 'unfinished' && data.status == 'cancel'){
-            task(status,data.id,data.name,data.status)
+        if(select === data.status || select == 'all'){
+            let status=data.status=='compleded'?'checked':''
+            let task=`
+            <li class="list-group-item">
+                <input type="checkbox" onclick="check(this,${data.id})" class="form-check-input" ${status} id="${data.id}" >
+                <label for="${data.id}" class="form-check-label ${status}" ${data.status}>${data.name}</label>
+                <a href="#" onclick="deleteTask(${data.id})"><i class="fa-solid fa-trash"></i></a>
+                <a href="#" onclick='updateTask(${data.id}, "${data.name}")'><i class="fa-solid fa-pencil"></i></a>
+            </li>
+        `
+        tasklist.insertAdjacentHTML('beforeend',task)
         }
+        
     }
-}
-
-function task(status,id,name,datastatus) {
-    let task=`
-        <li class="list-group-item">
-            <input type="checkbox" onclick="check(this,${id})" class="form-check-input" ${status} id="${id}" >
-            <label for="${id}" class="form-check-label ${status}" ${datastatus}>${name}</label>
-            <a href="#" onclick="deleteTask(${id})"><i class="fa-solid fa-trash"></i></a>
-            <a href="#" onclick='updateTask(${id}, "${name}")'><i class="fa-solid fa-pencil"></i></a>
-        </li>
-    `
-    tasklist.insertAdjacentHTML('beforeend',task)
 }
 
 function check(status,id) {
     if(status.checked){
         status.nextElementSibling.classList.add('checked')
-        statusFun('select',id)
+        statusFun('compleded',id)
     }else{
         status.nextElementSibling.classList.remove('checked')
-        statusFun('cancel',id)
+        statusFun('unfinished',id)
     }
 }
 
@@ -82,7 +64,6 @@ function statusFun(info,id) {
     for(let data of datas){
         if(data.id == id){
             data.status=info
-            console.log(data.status)
         }
     }
 }
