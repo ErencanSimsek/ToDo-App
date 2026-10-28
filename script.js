@@ -1,9 +1,8 @@
-let datas=[
-    {"id":1,"name":"Task 1",'status':'unfinished'},
-    {"id":2,"name":"Task 2",'status':'unfinished'},
-    {"id":3,"name":"Task 3",'status':'unfinished'},
-    {"id":4,"name":"Task 4",'status':'compleded'}
-]
+let datas=[]
+
+if(localStorage.getItem('newTask') !== null){
+    datas=JSON.parse(localStorage.getItem('newTask'))
+}
 
 let btnAdd=document.getElementById('btnAdd')
 let txtTaskName=document.getElementById('txtTaskName')
@@ -58,6 +57,7 @@ function check(status,id) {
         status.nextElementSibling.classList.remove('checked')
         statusFun('unfinished',id)
     }
+    localStorage.setItem('newTask',JSON.stringify(datas))
 }
 
 function statusFun(info,id) {
@@ -77,6 +77,7 @@ function keyEnter(event){
 function btnDelTask(event) {
     datas.splice(0,datas.length)
     tasksAdd()
+    localStorage.setItem('newTask',JSON.stringify(datas))
     event.preventDefault()
 }
 
@@ -85,6 +86,7 @@ function deleteTask(id) {
     deleteId=datas.findIndex(data=>data.id==id)
     datas.splice(deleteId,1);
     tasksAdd()
+    localStorage.setItem('newTask',JSON.stringify(datas))
 }
 
 function updateTask(id, name){
@@ -101,7 +103,7 @@ function btnAddTask(event) {
         alert('Please Enter Text!')
     }else{
         if(!update){
-            datas.push({"id":lastnumber,"name":txtTaskName.value})
+            datas.push({"id":lastnumber,"name":txtTaskName.value,'status':'unfinished'})
         }
         else{
             for(let data of datas){
@@ -113,6 +115,7 @@ function btnAddTask(event) {
         }
         txtTaskName.value=''
         tasksAdd()
+        localStorage.setItem('newTask',JSON.stringify(datas))
     }
     event.preventDefault();
 }
